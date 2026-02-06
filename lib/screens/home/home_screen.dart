@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:idn_pos/screens/cashier/cashier_screen.dart';
 import 'package:idn_pos/screens/home/components/home_header.dart';
 import 'package:idn_pos/screens/home/components/menu_card.dart';
+import 'package:idn_pos/screens/scanner/scanner_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -25,7 +27,7 @@ class HomeScreen extends StatelessWidget {
                     colors: [Color(0xFF4facfe), Color(0xFF00f2fe)],
                     ontap: () => Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (_) => Placeholder()),
+                      MaterialPageRoute(builder: (_) => CashierScreen()),
                     ),
                   ),
 
@@ -38,7 +40,7 @@ class HomeScreen extends StatelessWidget {
                     colors: [Color(0xFFfa709a), Color(0xFFfee140)],
                     ontap: () => Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (_) => Placeholder()),
+                      MaterialPageRoute(builder: (_) => ScannerScreen()),
                     ),
                   ),
                 ],

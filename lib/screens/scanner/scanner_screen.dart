@@ -18,36 +18,40 @@ class _ScannerScreenState extends State<ScannerScreen> {
   );
 
   bool _isScanned = false;
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
       body: Stack(
         children: [
-          // camera scanner
+          // Camera scanner
           MobileScanner(
             controller: controller,
             onDetect: (capture) {
               if (_isScanned) return;
-              // kondisi yang ada di perulangan for adalah kondisi ketika QR yang ditangkap oleh kamera
+              // kondisi yang ada di perulangan for, adalah kondisi ketika qr code sudah terisi kamera sudah bisa di tangkap
               for (final barcode in capture.barcodes) {
-                _handleQrCode;
+                _handleQRCode(barcode.rawValue);
               }
             },
           ),
+
           ScannerOverlay(),
-          ScannerHeader(controller: controller),
+          ScannerHeader(
+            controller: controller
+          ),
         ],
       ),
     );
   }
-
-  void _handleQrCode(String? code) {
+  void _handleQRCode(String? code) {
     if (code != null) {
       if (code.startsWith("PAY:")) {
+        // QR code valid
         setState(() {
           _isScanned = true;
-
           final parts = code.split(":");
           final id = parts[1];
           final total = int.tryParse(parts[2]) ?? 0;
@@ -55,37 +59,42 @@ class _ScannerScreenState extends State<ScannerScreen> {
           _showPaymentModal(id, total);
         });
       } else {
-        ScaffoldMessenger.of(
-          context,
-        ).hideCurrentMaterialBanner(); // QR Tidak valid
+        // QR tidak valid
+        ScaffoldMessenger.of(context).hideCurrentSnackBar();
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Row(
               children: [
-                Icon(Icons.error_outline, color: Colors.white),
+                Icon(
+                  Icons.error_outline,
+                  color: Colors.white,
+                ),
                 SizedBox(width: 10),
                 Expanded(
                   child: Text(
                     "QR Tidak Dikenali $code",
                     overflow: TextOverflow.ellipsis,
-                  ),
-                ),
+                  )
+                )
               ],
-            ),
-            backgroundColor: Colors.redAccent,
+            ),backgroundColor: Colors.red,
             behavior: SnackBarBehavior.floating,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadiusGeometry.circular(10)),
-            duration: Duration(milliseconds: 1000),
-          ),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            duration: Duration(
+              milliseconds: 1000,
+            ),
+          )
         );
       }
     }
   }
 
-  // tampilkan showmodalpayment 
+  // tampilkan modal payment
   void _showPaymentModal(String id, int total) {
     showModalBottomSheet(
-      context: context,
+      context: context, 
       isDismissible: false,
       backgroundColor: Colors.transparent,
       builder: (paymentContext) => PaymentModal(
@@ -97,19 +106,22 @@ class _ScannerScreenState extends State<ScannerScreen> {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(
-                "Pembayaran berhasil",
-              ), backgroundColor: Colors.green,)
+                "Pembayaran Berhasil",
+              ),
+              backgroundColor: Colors.green,
+            )
           );
-        }, 
+        },
         onCancel: () {
           Navigator.pop(paymentContext);
           setState(() {
-            _isScanned = false; //mereset state agar bisa scan lagi dari awal
+            _isScanned = false; 
+            // mereset state agar bisa scan lagi dari awal
           });
         }
-      )
-      ).then((_) {
-        if (_isScanned) setState(() => _isScanned = false);
-      });
+      ),
+    ).then((_) {
+      if (_isScanned) setState(() => _isScanned = false); 
+    });
   }
 }

@@ -6,19 +6,19 @@ class ScannerOverlay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Stack(
-      // overlay gelap transparan
       children: [
+        // overlay gelap transparan
         ColorFiltered(
           colorFilter: ColorFilter.mode(
-            Colors.black.withValues(alpha: 0.5),
-            BlendMode.srcOut
+            Colors.black.withValues(alpha: 0.5), 
+            BlendMode.srcOut,
           ),
           child: Stack(
             children: [
               Container(
                 decoration: BoxDecoration(
                   color: Colors.transparent,
-                  backgroundBlendMode: BlendMode.dstOut
+                  backgroundBlendMode: BlendMode.dstOut,
                 ),
               ),
               Center(
@@ -27,47 +27,52 @@ class ScannerOverlay extends StatelessWidget {
                   height: 280,
                   decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.circular(20)
+                    borderRadius: BorderRadius.circular(20),
                   ),
                 ),
               )
             ],
           ),
-          ),
-          // garis neon & teks petunjuk 
-          Center(
-            child: Container(
-              width: 280,
-              height: 280,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.cyanAccent.withValues(alpha: 0.2),
-                    blurRadius: 20,
-                    spreadRadius: 5
-                  )
-                ],
-                border: Border.all(color: Colors.cyanAccent,width: 2,),
-              ),
-              child: Stack(
-                children: [
-                  Align(
-                    alignment: Alignment.bottomCenter,
-                    child: Padding(padding: EdgeInsets.all(10),),
-                  ),
-                  Text(
-                    "Arahkan ke QR struk",
-                    style: TextStyle(
-                      color: Colors.white.withValues(alpha: 0.8),
-                      fontSize: 12
-                    ),
-                  )
-                ],
-              ),
-            ),
-          )
+        ),
 
+        // garis neon & text petunjuk
+        Center(
+          child: Container(
+            width: 280,
+            height: 280,
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: Colors.cyanAccent,
+                width: 2,
+              ),
+              borderRadius: BorderRadius.circular(20),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.cyanAccent.withValues(alpha: 0.2),
+                  blurRadius: 20,
+                  spreadRadius: 5,
+                )
+              ]
+            ),
+            child: Stack(
+              children: [
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Padding(
+                    padding: EdgeInsets.all(10),
+                    child: Text(
+                      "Arahkan ke QR Struk",
+                      style: TextStyle(
+                        color: Colors.white.withValues(alpha: 0.8),
+                        fontSize: 12,
+                      ),
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ),
+        )
       ],
     );
   }
